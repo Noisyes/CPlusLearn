@@ -623,6 +623,148 @@ template<class T1,class T2>
 * 友元函数类内实现
 * 友元函数类外实现
 
+## Day 9
+
+### C++ 类型转换
+
+#### 静态类型转换
+
+* 向上安全，向下不安全
+
+```c++
+char a = 'a'
+double d = static_cast<double>(a);
+```
+
+* static_cast<type>(instance)
+* 自定义类型非父子关系无法进行转换
+
+#### 动态类型转换
+
+* 基础类型不可以转换
+* dynamic_cast 非常严格，失去精度或者不安全都不可以进行转换
+* dynamic_cast如果发生了多态 就可以进行向下类型转换
+
+#### 常量转换
+
+* 不能对非指针和非引用变量使用const_cast
+* 给指针和引用加上const或者去除const
+
+#### 重新解释转换（基本不使用）
+
+### 异常
+
+#### 栈解旋
+
+* 从try开始到throw之前的所有栈上的对象都会被释放，这个过程被称为栈解旋
+
+#### 异常接口声明
+
+`void func()throw(int,char)`
+
+#### 异常变量的生命周期
+
+* 调用拷贝构造
+* 引用
+* 指针，早就释放了，但是仍然可以访问。但是现在是非法内存。
+
+#### 异常的多态使用
+
+* 利用多态，统一调用同一接口。抛出不同的错误提示
+
+#### 系统标准异常
+
+`#include<stdexcept>`
+
+#### 编写自己的异常类
+
+* 重写虚析构 和what（）
+
+### c++输入输出流
+
+##### 标准输入流
+
+* cin.get(两个参数) 不会读取换行符
+* cin.getline() 会读取换行符并且扔掉
+* cin.ignore() 没有参数会忽略一个字符 带参数的可以规定忽略几个字符
+* cin.peek()  会返回缓冲区中的第一个字符。
+* cin.putback() 放回
+* cin.clear()重置标志位和cin.sync()清空缓冲区
+* cin.fail()错误标志
+
+##### 标准输出流
+
+* cout.put() 缓冲区写字符
+
+* cout.write() 向buffer写num个字节到输出流中
+
+* 格式化输出 `#include<iomanip>`
+
+  * 控制符控制
+  * 成员函数控制
+### 文件输入输出流
+
+#### 输出流
+
+`ofstream ofs("",ios::out|ios::trunc);`
+
+```c++
+ofstream ofs;
+ofs.open("path",ios::out|ios::trunc)
+    if(!ofs.is_open)
+    {
+        
+    }
+```
+
+#### 输入流
+
+```c++
+ifstream ifs;
+ifs.open("path",ios::in);
+if(!ifs.is_open())
+{
+    
+}
+//first
+char buf[1024];
+while(ifs>>buf) //按行输入
+{
+    cout<<buf<<endl;
+}
+//second
+char buf2[1024];
+while(!ifs.eof())//读到文件尾部
+{
+    ifs.getline(buf2,sizeof(buf2));
+    cout<<buf2<<endl;
+}
+//three 单个字符读取 不推荐
+char c;
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
