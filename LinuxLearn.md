@@ -141,17 +141,129 @@ chmod 666 filename
 
 * 目录可执行权限指 是否能进入目录
 
-### chown 改变用户
+###  chown 改变用户
 
 * chown 用户:组 文件名|目录
 * chown 用户 文件名|目录
 
 ### chgrp改变组
 
+###  查找
 
+* find
 
-​    
+  * find dir [option] 内容 
 
-  
+    * find ./ -name "*.c" //按名字查找
 
-  
+    * find./ -type f //按类型查找 (文件)
+
+    * find ./ -type -d //文件夹类型
+
+    * find ./ -size +1M //大于1M的文件
+
+    * find ./ -size +1M -size -5M
+
+    * find ./  -maxdepth 1 -size +1M
+
+    * find ./  -maxdepth 1 -size +1M -exec ls -l {}\;
+
+    * find ./  -maxdepth 1 -size +1M -ok ls -l {}\;
+
+    * find./ -type f|xargs ls -l //xargs将find命令查找的结果分为若干块传递给ls-l命令
+
+* grep
+  * grep 内容 文件名
+  * grep -v 排除
+  * grep -rn 内容 可以递归 且 显示行数
+* zip
+  * zip -r dir.zip dir1 dir2// -r递归子目录
+  * unzip dir zip
+* gzip/gunzip 解压之后的格式是.gz
+  * tar --最常用的打包工具 .tar.gz
+    * tar zcvf dir.tar.gz sourcedir
+    * tar zjxvf dir.tar.gz //解压
+      * -c 压缩
+      * -v显示信息
+      * -f指定压缩包名
+      * -z gz格式压缩
+      * tar[option] 压缩包名 原材料
+    * tar jcvf dir.tar.bzip2 filename
+    * tarjxvf dir.tar.bzip2
+* rar
+  * rar a  -r dir file //自动添加后缀 --打包
+    * a代表压缩 -r递归子目录
+    * rar a -r 压缩包名 原材料
+  * rar x  -r 压缩包名
+
+### 其他常用命令
+
+* date
+* alias
+* umask 补码
+* shutdown
+  * init
+  * poweroff
+  * reboot
+  * shutdown -h now
+
+## Day 2
+
+### Vim 
+
+* 移动光标
+  * 0 行首
+  * $ 行尾
+  * gg 文件得开头
+  * G 文件得末尾
+  * nG 到n行
+* 删除
+  * x 删除光标内容
+  * X删除光标前内容
+  * dw删除单词
+  * d0删除光标到行首
+  * d$删除到行尾
+  * dd 删除光标所在行
+  * ndd 删除光标所在行起得n行
+* 撤销
+  * u
+  * ctrl+r反撤销
+* 赋值粘贴
+  * yy赋值所在行
+  * p粘贴
+  * P粘贴
+  * nyy
+  * ndd 剪切n行内容
+  * r 替换
+  * v 可视模式
+* 内容查找
+  * /content
+    * n/N 进行遍历
+* 格式调整
+  * gg=G
+  * << 向左移动一个tab
+  * n<< n行左移一个tab
+* man
+  * K或者nK可以查看函数原型
+* 编辑模式
+  *  i 光标前插入
+  * a 光标后插入
+  * I行首插入
+  * A行尾插入
+  * o向上一行插入
+  * O向下一行插入
+  * s删除当前字母进入编辑模式
+  * S删除当前行进入编辑模式
+* 末行模式
+  * :!ls -l
+  * :%s /content1 /content2 /g
+  * ZZ 保存
+  * vsp  filename 分屏
+    * qall
+    * wqall
+* shell设置vim快捷键： set -o vi 加入 ~/.bashrc
+
+ 
+
+​      
+
