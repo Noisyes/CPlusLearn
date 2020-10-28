@@ -182,7 +182,7 @@ chmod 666 filename
 * gzip/gunzip 解压之后的格式是.gz
   * tar --最常用的打包工具 .tar.gz
     * tar zcvf dir.tar.gz sourcedir
-    * tar zjxvf dir.tar.gz //解压
+    * tar zxvf dir.tar.gz //解压
       * -c 压缩
       * -v显示信息
       * -f指定压缩包名
@@ -263,7 +263,54 @@ chmod 666 filename
     * wqall
 * shell设置vim快捷键： set -o vi 加入 ~/.bashrc
 
- 
+### gcc编译流程
 
-​      
+#### gcc工作流程
 
+hello.c---------->gcc -E （预处理、头文件展开、宏替换）（调用cpp）生成.i文件 ----------------> gcc -S hello.i (生成汇编指令，hello.s)-----------------> gcc -c 得到hello.o 将汇编编译为二进制文件，但是没有链接（调用as汇编命令）-------->链接(调用ld)---->a.out
+
+* 当找不到头文件
+  * gcc add.c -I ./include/
+* 当没有设置宏
+  * gcc add.c -I ./include/ -D DEBUG -o hello.out
+* gcc  add.c -lstdc++
+* 开启gdb选项用来调试 -g
+* -Wall 开启警告
+* g++ 编译c++代码
+* -O 优化选项
+* l 指定库名 -lxxx (其中xxx为中libxxx.so)
+* -L包含库文件 
+
+### 静态库制作(.a)
+
+1. 编译为.o文件
+   1. gcc -c *c -I include/
+2. 将.o文件 打包  ar rcs libxxx.a file1.o file2.o
+   1. ar rcs libCalc.a *o
+3. 将头文件和库一起发布
+
+### 动态库制作（.so）
+
+1. 编译与位置无关的代码 生成.o 关键参数-fPIC
+
+   1. gcc -fPIC -c *c -I include/
+
+2. 将.o文件打包 关键参数-shared
+
+   1. gcc -shared -o libCalc.so *.o
+
+3. 将库与头文件一起打包
+
+   
+
+​      ![image-20201027202252664](C:\Users\Noisyes\AppData\Roaming\Typora\typora-user-images\image-20201027202252664.png)
+
+* 使用 gcc main.c -o newapp -I include/ -L lib/ -lCalc
+
+#### 使用动态库
+
+* 将动态库加入/lib 或者/usr/lib
+* 将库路径增加到 LD_LIBRARY_PATH 环境变量(生效一次，关闭shell就没了)
+  * export LD_LIBRARY_PATH = *******:$LDLD_LIBRARY_PATH
+* sudo vim /etc/ld.so.conf 将库路径增加到这个文件 
+  * sudo ldconfig  -v
