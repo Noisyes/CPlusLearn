@@ -311,6 +311,171 @@ hello.c---------->gcc -E （预处理、头文件展开、宏替换）（调用c
 
 * 将动态库加入/lib 或者/usr/lib
 * 将库路径增加到 LD_LIBRARY_PATH 环境变量(生效一次，关闭shell就没了)
-  * export LD_LIBRARY_PATH = *******:$LDLD_LIBRARY_PATH
+  * export LD_LIBRARY_PATH = *******:$LD_LIBRARY_PATH
 * sudo vim /etc/ld.so.conf 将库路径增加到这个文件 
   * sudo ldconfig  -v
+
+## Day 3
+
+### makefile
+
+#### 命名规则
+
+* makefile
+* Makefile
+
+#### 三要素
+
+* 目标
+* 依赖
+* 规则命令
+
+#### makefile编写1
+
+写法 ：
+
+目标:依赖
+
+tab 规则命令
+
+```makefile
+app: main.c add.c sub.c div.c mul.c
+	gcc -o app -I /include main.c add.c sub.c div.c mul.c
+	
+```
+
+执行： make
+
+缺点：更改其中一个文件，所有代码重新编译
+
+#### makefile编写2
+
+* 考虑分解过程，先生成.o 文件 使用.o文件生成out文件。
+  * 依赖文件如果比目标文件新，则重新生成目标文件
+
+```makefile
+# ObjFiles目标文件
+ObjFiles = main.o add.o sub.o div.o mul.o
+# 目标文件用法 $(var)
+app:$(ObjFiles)
+	gcc -o app -I ./Include main.o add.o sub.o div.o mul.o
+main.o:main.c
+	gcc -c main.c -I ./Include
+sub.o:sub.c
+	gcc -c sub.c -I ./Include
+//后面重复
+```
+
+* make默认处理第一个目标
+
+#### makefile编写3
+
+函数：
+
+​	wildcard 文件匹配
+
+​	patsubst 内容替换
+
+变量：
+
+	* $@ 代表目标
+	* $^ 代表全部依赖
+	* $< 第一依赖
+	* $? 第一个变换的依赖
+
+```makefile
+#得到所有.c文件
+SrcFile= $(wildcard *.c)
+#all .c files -->.o files
+ObjFiles = $(patsubst %.c,%.o,$(SrcFiles))
+# 目标文件用法 $(var)
+app:$(ObjFiles)
+	gcc -o app -I ./Include $(ObjFiles)
+#$< 和 $<这样的变量，只能在规则中出现
+%.o:%.c
+	gcc -c $< -I ./Include -o $@
+//后面重复
+```
+
+#### makefile4
+
+```makefile
+#得到所有.c文件
+SrcFile= $(wildcard *.c)
+#all .c files -->.o files
+ObjFiles = $(patsubst %.c,%.o,$(SrcFiles))
+all:app
+# 目标文件用法 $(var)
+app:$(ObjFiles)
+	gcc -o app -I ./Include $(ObjFiles)
+#$< 和 $<这样的变量，只能在规则中出现
+%.o:%.c
+	gcc -c $< -I ./Include -o $@
+//后面重复
+.PHONY:clean all#伪目标，不是生成目录中的真正目标 消除歧义
+clean:
+	-@rm -f *.o #@可以不看命令 -代表报错仍然继续执行
+	-@rm -f app
+```
+
+* make -f makefilename
+
+### gdb调试
+
+* 使用gdb 编译的时候使用 -g
+
+`gcc func.c main.c -o app -I ./Include -g`
+
+* gdb app(启动gdb)
+* 在gdb里面启动程序
+
+  * run
+  * start //分步调试 停留在main函数
+  * n(ext) //下一步
+  * s(tep) //下一步 进入函数内部
+  * quit 推出gdb
+* 提供参数
+    * set args 10 6
+    * run
+    
+* 设置断点
+
+  * list 看代码
+  * b 17 //break 17行设置断点（主函数所在文件的行号）
+  * run //停留断点
+  * b sum //设置函数
+  * b main.c:25 文件：行数
+  * list func.c:1 展示func.c文件
+  * info b 查看设置了几个断点
+  * 删除断点 d(el) 4
+  * c //跳到下一个断点
+  * p(rint) 打印变量值
+  * ptype 打印类型
+  * set gdb过程中设置变量的值
+    * set argc = 4;
+    * set argv[1] = "12"
+
+* 跟踪变量
+    * display argc // 执行每个指令可以查看是否变换
+    * info display
+    * undisplay 编号 不跟踪
+* 条件断点
+    * b 32 if i==1 //在循环中设置条件断点
+
+#### gdb跟踪core
+
+* `ulimit -c unlimited`
+* gdb app core // core是案发现场
+  * where 告诉报错具体行数
+* 设置core
+  * /proc/sys/kernel/core_pattern
+  * sudo su
+  * echo "core-%e-%t" > /proc/sys/kernel/core_pattern
+    * %e 进程名
+    * %t时间戳
+    * 
+
+
+
+
+
