@@ -473,7 +473,27 @@ clean:
   * echo "core-%e-%t" > /proc/sys/kernel/core_pattern
     * %e 进程名
     * %t时间戳
-    * 
+
+### 文件IO
+
+* 查看linux函数 man 2 open
+  * int open(const char * filename,int flag)
+  * O_NONBLOCK非阻塞
+  * 返回最小的可用文件描述符
+* int close(int fd)
+* read 读
+* write 写
+* lseek 移动文件读写位置
+
+#### 阻塞
+
+read函数在读设备或者读管道，或者读网络的时候，有一种等待状态。
+
+输入输出设备对应/dev/tty
+
+* fcntl()函数可以设置非阻塞
+
+
 
 
 
