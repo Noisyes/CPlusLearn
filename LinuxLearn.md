@@ -565,7 +565,27 @@ stat碰到连接，会追述到源文件，lstat不会穿透
   * 创建文件夹
   * 权限注意给0777,如果目录没有执行权限就不可进入
 
+### opendir
 
+* 打开目录
 
+### readdir
 
+* 读取目录
+
+### closedir
+
+* 关闭目录
+
+### rewinddir
+
+* 把目录指针恢复到起始位置
+
+### telldir
+
+### seelkdir
+
+### strerror
+
+* 输出错误信息
 
