@@ -493,7 +493,77 @@ read函数在读设备或者读管道，或者读网络的时候，有一种等�
 
 * fcntl()函数可以设置非阻塞
 
+## Day 4
 
+* ls -i filename 查看inode id
+
+### stat函数
+
+* pathname 文件名
+* struct stat* buf 传出参数
+* 返回值，成功为0，失败返回-1
+* 需要使用getpwuid 获得用户名
+* getgrgid() 获得组名
+* localtime获取时间
+
+### lstat
+
+stat碰到连接，会追述到源文件，lstat不会穿透
+
+### access函数
+
+* 判断文件权限和是否存在
+
+### chmod函数
+
+* 更改文件权限
+
+### truncate函数
+
+* 截断文件
+* 对应文件必须存在，长度大于源文件 直接拓展，小于直接截断。
+
+### link 硬连接
+
+### symlink 符号链接
+
+### readlink
+
+* 读取符号链接
+
+### unlink
+
+* 取消软硬连接
+* 删除硬连接计数
+* 有进程引用文件的时候不删除，进程结束最后再删除。
+
+### chown
+
+* int chown(const char* pathname,uid_t owner,gid_t group)
+* pathowner
+* owner 用户id /etc/passwd
+* group 组id /etc/group
+
+### rename
+
+* 文件目录皆可以
+
+### getcwd
+
+目录相关函数
+
+* 获得当前工作路径
+  * 成功返回路径指针
+  * 失败返回null
+
+### chdir 
+
+* 改变工作目录
+  * 成功返回0
+  * 失败返回-1
+* mkdir 
+  * 创建文件夹
+  * 权限注意给0777,如果目录没有执行权限就不可进入
 
 
 
