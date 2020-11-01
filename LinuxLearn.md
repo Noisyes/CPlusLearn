@@ -589,6 +589,14 @@ stat碰到连接，会追述到源文件，lstat不会穿透
 
 * 输出错误信息
 
+### dup2（int oldfd,int newfd）
+
+* 关闭newfd所指文件描述符
+* 将newfd指向oldfd所指向的文件描述符
+
+### dup（int oldfd）
+
+* 将最小的文件描述符，又指向oldfd指向的文件
 ## Day 5
 
 * 什么是程序
