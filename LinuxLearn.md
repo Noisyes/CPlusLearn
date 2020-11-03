@@ -743,7 +743,6 @@ stat碰到连接，会追述到源文件，lstat不会穿透
 
 * 创建映射区
   * mmap 
-
 * 释放映射区
   * munmap
 * 注意事项
@@ -761,5 +760,105 @@ stat碰到连接，会追述到源文件，lstat不会穿透
 * 支持无血缘进程之间的通信
 * 内存 谁都可以读取，fifo读了就没有了
 
+## Day 7
 
+信号的特点：简单、不能携带大量信息、满足特定条件发生
+
+信号机制：进程b发送给进程a，本质上信号都是内核产生，内核处理的。
+
+信号也叫软件中断，可能有延迟
+
+### 产生信号
+
+* 按键产生
+  * ctrl+c ，ctrl+\， ctrl+z
+  * 系统调用： kill raise
+  * 定时器 alarm setitmer
+  * 命令产生 kill
+  * 硬件异常 段错误 浮点型错误 总线错误，SIGPIPE
+
+* 信号的状态
+  * 产生
+  * 到达 信号到达并且处理完毕
+  * 未决 信号被阻塞
+* 信号默认处理方式
+  * 忽略
+  * 执行默认动作
+  * 捕获
+* 信号4要素
+  * 编号
+  * 事件
+  * 名称
+  * 默认处理动作
+    * 终止
+    * 忽略
+    * 产生core
+    * 暂停
+    * 继续
+* 信号的处理方式
+  * 执行默认动作
+  * 忽略
+  * 捕捉
+  * 9,19不能捕捉不能忽略，甚至不能阻塞。
+
+### 未决信号集和阻塞信号集
+
+
+
+### 函数信号
+
+	* kill
+	* raise
+	* abort
+
+### 时钟信号
+
+* alarm
+
+* 定时给自己发送sigalrm
+* 参数，几秒后发送信号
+* 返回值，上一次闹钟剩余秒数
+* 参数设为0，取消闹钟
+
+### setitimer函数
+
+* 周期性发送信号
+* 一个进程只有一个时钟
+
+### 信号集函数
+
+* int sigemptyset(sigset_t *set)
+
+* int sigfillset(sigset_t *set)
+
+* int sigaddset(sigset_t *set,int signum)
+
+* int sigdelset(sigset_t *set,int signum)
+
+* int sigismember(sigset_t *set,int signum)
+
+* sigprocmask(int how,const sigset_t *set,sigset_t *oldset)
+
+  * 阻塞和接触阻塞信号集
+  * how 宏定义 具体查看manpage
+
+* sigpending(sigset_t *set)
+
+  * 获取未决信号集
+  * set为传出参数
+
+### 信号捕捉
+
+* 防止进程意外死亡
+* signal(int signum,sighandler_t handler)
+* sigaction
+
+### 信号捕捉特性
+
+* 在信号捕捉函数执行期间，相同信号会被临时屏蔽
+* 未决信号集不支持排队，多次发送可能只能执行一次
+
+### 信号回收子进程
+
+* 借助SIGCHLD信号
 
