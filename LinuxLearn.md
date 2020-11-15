@@ -839,7 +839,7 @@ stat碰到连接，会追述到源文件，lstat不会穿透
 
 * sigprocmask(int how,const sigset_t *set,sigset_t *oldset)
 
-  * 阻塞和接触阻塞信号集
+  * 阻塞和解除阻塞信号集
   * how 宏定义 具体查看manpage
 
 * sigpending(sigset_t *set)
@@ -1150,6 +1150,7 @@ stat碰到连接，会追述到源文件，lstat不会穿透
     * 非0为进程信号量
   * value定义的信号量的个数
 * sem_destroy
+  
   * 摧毁信号量
 * sem_wait
   * 申请信号量，--
@@ -1158,6 +1159,7 @@ stat碰到连接，会追述到源文件，lstat不会穿透
 * sem_timedwait
 * sem_getvalue
 * sem_pos
+  
   * 释放信号量，++
 * sem_open
 * sem_close
@@ -1170,10 +1172,5 @@ stat碰到连接，会追述到源文件，lstat不会穿透
 
 * 保证当前只运行一个进程
 * 使用fcntl函数中的setlk  
-
-
-
-
-
 
 
